@@ -1,0 +1,28 @@
+// module.exports = {
+//   endOfLine: "auto",
+//   tabWidth: 2,
+//   semi: true,
+//   singleQuote: false,
+//   trailingComma: "all",
+//   useTabs: false,
+//   arrowParens: "avoid",
+//   printWidth: 120,
+// };
+module.exports = {
+  arrowParens: "avoid",
+  bracketSpacing: true,
+  htmlWhitespaceSensitivity: "css",
+  insertPragma: false,
+  jsxBracketSameLine: false,
+  jsxSingleQuote: false,
+  printWidth: 80,
+  proseWrap: "preserve",
+  quoteProps: "as-needed",
+  requirePragma: false,
+  semi: true,
+  singleQuote: false,
+  tabWidth: 2,
+  trailingComma: "none",
+  useTabs: false,
+  vueIndentScriptAndStyle: false,
+};
