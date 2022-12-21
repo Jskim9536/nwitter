@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from "react";
-import { dbService } from "../fbase";
+import { dbService, storageService } from "../fbase";
 import {
   addDoc,
   collection,
@@ -9,6 +9,7 @@ import {
   orderBy
 } from "firebase/firestore";
 import Nweet from "../components/Nweet";
+import { v4 as uuidv4 } from "uuid";
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
@@ -36,16 +37,28 @@ const Home = ({ userObj }) => {
       target: { value }
     } = event;
     setNweet(value);
+    setAttachment("");
   };
 
   const onSubmit = async event => {
     event.preventDefault();
-    await addDoc(collection(dbService, "nweets"), {
+    let attachmentUrl = "";
+    if (attachment !== "") {
+      const attachmentRef = storageService
+        .ref()
+        .child(`${userObj.uid}/${uuidv4()}`); // Reference -storage의 이미지 폴더 생성.
+      const response = await attachmentRef.putString(attachment, "data_url"); // 폴더에 이미지를 넣는 작업
+      attachmentUrl = await response.ref.getDownloadURL(); // 폴더에 이미지 넣는 작업이 완료시 .ref를 통해 이미지 Reference 접근이 가능하고, get DownloadURL을 통해 이미지가 저장된 주소를 받을 수 있다.
+    }
+    const nweetObj = {
       text: nweet,
       createdAt: Date.now(),
-      createrId: userObj.uid
-    });
+      createrId: userObj.uid,
+      url: attachmentUrl
+    };
+    await addDoc(collection(dbService, "nweets"), nweetObj);
     setNweet("");
+    onClearAttachment();
   };
 
   const onFileChange = event => {
@@ -64,7 +77,7 @@ const Home = ({ userObj }) => {
   };
 
   const onClearAttachment = () => {
-    setAttachment(null);
+    setAttachment("");
     fileInput.current.value = null;
   };
 

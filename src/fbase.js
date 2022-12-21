@@ -5,6 +5,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { getFirestore } from "firebase/firestore";
 import { fireEvent } from "@testing-library/react";
+import "firebase/compat/storage";
 // import "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -26,3 +27,4 @@ firebase.initializeApp(firebaseConfig);
 export const authService = firebase.auth();
 export const firebaseInstance = firebase;
 export const dbService = getFirestore();
+export const storageService = firebase.storage();
